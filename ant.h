@@ -4,6 +4,7 @@ class ant{
     int X;
     int Y;
     int Orientation;
+    int Iteration;
 public:
     ant();
     void toLeft();
@@ -11,7 +12,7 @@ public:
     int getX();
     int getY();
     int getOrient();
-    
+    int getIter();
 };
 
 

@@ -7,11 +7,13 @@ class window {
     static int Height;
     static int StepX;
     static int StepY;
+    static int Speed;
     static std::vector< std::vector<bool> > Area;
     static ant Ant;
     static int Boxes;
+		static void setAreaFalse();
 public:
-    static void init(int w, int h, int b);
+    static void init(int w, int h, int b, int s);
     static void draw();
     static int getHeight();
     static int getWidth();
@@ -20,7 +22,10 @@ public:
     static std::vector< std::vector<bool> > getArea();
     static void process(int a);
     static int getCenter();
+    friend void Values();
+    friend void draw_string(void *font, const char* string);
 };
 
+void draw_string(void *font, const char* string); 
 #endif	/* WINDOW_H */
 

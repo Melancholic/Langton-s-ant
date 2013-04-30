@@ -1,10 +1,3 @@
-/* 
- * File:   ant.cpp
- * Author: sosnov
- *
- * Created on 25 Апрель 2013 г., 22:16
- */
-
 #include <cstdlib>
 #include<stdio.h>
 #include"window.h"
@@ -12,7 +5,8 @@
 ant::ant(){
     this->X=window::getCenter();
     this->Y=window::getCenter();
-    this->Orientation=90;       
+    this->Orientation=90; 
+    this->Iteration=0;
 }
 
 void ant::toLeft(){
@@ -24,6 +18,7 @@ void ant::toLeft(){
     }
    
     this->Orientation+=90;
+    this->Iteration++;
     if(Orientation<0){
         Orientation+=360;
     }else{
@@ -42,6 +37,7 @@ void ant::toRight(){
     this->Orientation-=90;
     if(Orientation<0){
         Orientation+=360;
+        this->Iteration++;    
     }else{
         this->Orientation=this->Orientation%360;
         }
@@ -56,4 +52,8 @@ int ant::getY(){
 
 int ant::getOrient(){
     return this->Orientation;
+}
+
+int ant::getIter(){
+    return this->Iteration;
 }

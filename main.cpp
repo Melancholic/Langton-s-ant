@@ -3,10 +3,10 @@
 #include"window.h"
 #include<iostream>
 int main(int argc, char** argv) {
-    int h,w,b;
-    std::cout<<"Введите парметры окна: <ширину> <высоту> <кол-во клеток> : ";
-    std::cin>>h>>w>>b;
-    window::init(h,w,b);
+    int h,w,b,s;
+    std::cout<<"Введите парметры окна: <ширину> <высоту> <кол-во клеток> <скорость 0-10>: ";
+    std::cin>>h>>w>>b>>s;
+    window::init(h,w,b,s);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(window::getWidth(),window::getHeight());
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     glViewport(0,0,400,300);
     gluOrtho2D(0.0, window::getWidth(), 0.0,window::getHeight() );
     glutDisplayFunc(window::draw);
-    window::process(1);
+   glutTimerFunc(0, window::process, 1);
     glutMainLoop();
     return 0;
 }
