@@ -11,7 +11,7 @@ class window {
     static std::vector< std::vector<bool> > Area;
     static ant Ant;
     static int Boxes;
-		static void setAreaFalse();
+    static void setAreaFalse();
 public:
     static void init(int w, int h, int b, int s);
     static void draw();

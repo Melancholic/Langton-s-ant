@@ -35,9 +35,9 @@ void ant::toRight(){
         case 270: Y--;break;
     }
     this->Orientation-=90;
+    this->Iteration++; 
     if(Orientation<0){
-        Orientation+=360;
-        this->Iteration++;    
+        Orientation+=360;          
     }else{
         this->Orientation=this->Orientation%360;
         }

@@ -49,11 +49,12 @@ void window::init(int w, int h, int b, int s){
     StepX=Width/Boxes;
     StepY=Height/Boxes;  
     Ant= ant();
+    std::cout<<s;
     if(s>=0 ||s<=10){
-            Speed=1000-s*100;
+            window::Speed=1000-s*100;
     }else{
         std::cout<<"\nErr value speed - set default(10) ";
-        Speed=0;
+        window::Speed=0;
     }
     window::Area.resize(Boxes);
     for(int i=0;i!=window::Area.size();++i){
@@ -75,18 +76,16 @@ void Values(){
             window::Area[window::Ant.getX()][window::Ant.getY()]=!window::Area[window::Ant.getX()][window::Ant.getY()];      
             window::Ant.toRight(); 
         }	
-    }else{
-        exit(0);    
-        window::Ant=ant();
+    }else{  
         window::setAreaFalse();
+        window::Ant=ant();
     }
 }
 
 void window::process(int a){
-  // window::draw();
     glutPostRedisplay();
-   boost::thread my_thread1(Values);
-   my_thread1.join();
+    boost::thread ValTh(Values);
+    ValTh.join();
    glutTimerFunc(window::Speed, window::process,1 );
 }
 
