@@ -5,8 +5,8 @@
 class window {
     static int Width;
     static int Height;
-    static int StepX;
-    static int StepY;
+    static double StepX;
+    static double StepY;
     static int Speed;
     static std::vector< std::vector<bool> > Area;
     static ant Ant;
@@ -17,8 +17,8 @@ public:
     static void draw();
     static int getHeight();
     static int getWidth();
-    static int getStepX();
-    static int getStepY();
+    static double getStepX();
+    static double getStepY();
     static std::vector< std::vector<bool> > getArea();
     static void process(int a);
     static int getCenter();

@@ -50,6 +50,13 @@ int ant::getY(){
     return this->Y;
 }
 
+void ant::setX(int x){
+    this->X=x;
+}
+void ant::setY(int y){
+    this->Y=y;
+}
+
 int ant::getOrient(){
     return this->Orientation;
 }

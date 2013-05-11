@@ -9,8 +9,8 @@
 std::vector< std::vector<bool> > window::Area;
 int window::Width;
 int window::Height;
-int window::StepX;
-int window::StepY;
+double window::StepX;
+double window::StepY;
 ant window::Ant;
 int window::Boxes;
 int window::Speed;
@@ -23,10 +23,10 @@ int window::getWidth(){
     return Width;
 }
 
-int window::getStepX(){
+double window::getStepX(){
     return StepX;
 }
-int window::getStepY(){
+double window::getStepY(){
     return StepY;
 }
 
@@ -46,10 +46,9 @@ void window::init(int w, int h, int b, int s){
     Width=w;
     Height=h;
     Boxes=b;
-    StepX=Width/Boxes;
-    StepY=Height/Boxes;  
+    StepX=(double)Width/Boxes;
+    StepY=(double)Height/Boxes;  
     Ant= ant();
-    std::cout<<s;
     if(s>=0 ||s<=10){
             window::Speed=1000-s*100;
     }else{
@@ -68,7 +67,7 @@ int window::getCenter(){
     return window::Boxes/2; 
 }
 void Values(){
-    if((window::Ant.getX()>0 && window::Ant.getX()<window::Area.size()) && (window::Ant.getY()>0 && window::Ant.getY()<window::Area.size())){
+    if((window::Ant.getX()>=0 && window::Ant.getX()<window::Boxes) && (window::Ant.getY()>=0 && window::Ant.getY()<window::Boxes)){
         if(window::Area[window::Ant.getX()][window::Ant.getY()]){
             window::Area[window::Ant.getX()][window::Ant.getY()]=!window::Area[window::Ant.getX()][window::Ant.getY()];
             window::Ant.toLeft();
@@ -77,8 +76,19 @@ void Values(){
             window::Ant.toRight(); 
         }	
     }else{  
-        window::setAreaFalse();
-        window::Ant=ant();
+        int AntX=window::Ant.getX();       
+        if(AntX<0){
+            window::Ant.setX(window::Boxes+AntX);
+        } else if(AntX>=window::Boxes){
+            window::Ant.setX(AntX-window::Boxes);
+        }
+        int AntY=window::Ant.getY();
+        if(AntY<0){
+            window::Ant.setY(window::Boxes+AntY);
+        } else if(AntY>=window::Boxes){
+            window::Ant.setY(AntY-window::Boxes);
+        }
+
     }
 }
 
@@ -92,21 +102,17 @@ void window::process(int a){
 void window::draw(){    
   glClear(GL_COLOR_BUFFER_BIT); 
   glLineWidth(1.0f);
-    glBegin(GL_LINES);  
-    glColor3f(.5, .5, .5); 
-    for(int i=0;i<window::getWidth();i+=window::getStepX()){
-        glVertex2f(i,0);
-        glVertex2f(i,window::getHeight());
-        
-    }  
-    for(int i=0;i<window::getHeight();i+=window::getStepY()){
-        glVertex2f(0,i);
-        glVertex2f(window::getWidth(),i);
-        
+  glColor3f(.5, .5, .5); 
+  for(int i=0;i<=window::Boxes;++i){
+      glBegin(GL_LINES);
+      glVertex2f(i*window::getStepX(),0);
+      glVertex2f(i*window::getStepX(),window::getHeight());
+      glEnd();
+      glBegin(GL_LINES);
+      glVertex2f(0,i*window::getStepY());
+      glVertex2f(window::getWidth(),i*window::getStepY());
+      glEnd();
     } 
-
-    glEnd();
-    
     glColor3f(.1, .1, 0); 
     for(int i=0;i<window::Area.size();++i){
         for(int j=0;j<window::Area[i].size();++j){
@@ -114,7 +120,7 @@ void window::draw(){
                 glBegin(GL_QUADS);
                 glVertex2f((i)*window::getStepX(),(j)*window::getStepY());
                 glVertex2f((i+1)*window::getStepX(),(j)*window::getStepY());
-                glVertex2f((i+1)*window::getStepX(),(j+1)*window::getStepY());//(4,5)
+                glVertex2f((i+1)*window::getStepX(),(j+1)*window::getStepY());
                 glVertex2f((i)*window::getStepX(),(j+1)*window::getStepY());
                 glEnd();
             }
@@ -128,23 +134,30 @@ void window::draw(){
     glVertex2f((window::Ant.getX()+1)*window::getStepX(),(window::Ant.getY()+1)*window::getStepY());
     glVertex2f((window::Ant.getX())*window::getStepX(),(window::Ant.getY()+1)*window::getStepY());
     glEnd();
-    
+  
+    glBegin(GL_QUADS);
+    glColor3f(1, 1, 1);  
+    glVertex2f(window::getWidth()*0.75,window::getHeight()*0.83);
+    glVertex2f(window::getWidth()*0.75,window::getHeight()*0.93);
+    glVertex2f(window::getWidth()*0.98,window::getHeight()*0.93);
+    glVertex2f(window::getWidth()*0.98,window::getHeight()*0.83);
+    glEnd();
     
   glPushMatrix();
-  glLineWidth(1.5f);
-  glTranslatef(window::getWidth()*0.8,window::getHeight()*0.9, 0);
+  glLineWidth(window::Width/500);
+  glTranslatef(window::getWidth()*0.78,window::getHeight()*0.9, 0);
   glScalef(0.15f, 0.15f, 1.0f);
-  glColor3f(1, 0, 0); 
+  glColor3f(0, 0, 0); 
   draw_string(GLUT_STROKE_ROMAN, "Iteration:  ");
   char tmp[10];
   sprintf(tmp, "%d", window::Ant.getIter());
   draw_string(GLUT_STROKE_ROMAN, tmp );
   glPopMatrix();
   glPushMatrix();
-  glLineWidth(1.5f);
-  glTranslatef(window::getWidth()*0.8,window::getHeight()*0.88, 0);
+  glLineWidth(window::Width/500);
+  glTranslatef(window::getWidth()*0.78,window::getHeight()*0.85, 0);
   glScalef(0.15f, 0.15f, 1.0f);
-  glColor3f(1, 0, 0);
+  glColor3f(0, 0, 0);
   draw_string(GLUT_STROKE_ROMAN, "Orientation:  ");
    switch(window::Ant.getOrient()){
         case 0:draw_string(GLUT_STROKE_ROMAN, "UP");break;

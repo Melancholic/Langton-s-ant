@@ -13,6 +13,8 @@ public:
     int getY();
     int getOrient();
     int getIter();
+    void setX(int x);
+    void setY(int y);
 };
 
 
