@@ -4,7 +4,8 @@
 #include<iostream>
 #include<boost/thread/thread.hpp>
 #include <stdio.h>
-
+#include"parser.h"
+#include <utility>
 
 std::vector< std::vector<bool> > window::Area;
 int window::Width;
@@ -42,13 +43,19 @@ void window::setAreaFalse(){
     }
 }
 
-void window::init(int w, int h, int b, int s){    
+void window::init(int w, int h, int b,int s, parser &P ){    
     Width=w;
     Height=h;
     Boxes=b;
     StepX=(double)Width/Boxes;
     StepY=(double)Height/Boxes;  
-    Ant= ant();
+    if(P.getCfgStatus()){
+        Ant=ant(P.getParAntStart());
+    }else{
+        std::cerr<<"\nSet default ant\n";
+        Ant= ant();
+    }
+
     if(s>=0 ||s<=10){
             window::Speed=1000-s*100;
     }else{
@@ -59,8 +66,12 @@ void window::init(int w, int h, int b, int s){
     for(int i=0;i!=window::Area.size();++i){
        window::Area[i].resize(Boxes);
     }
-   window::setAreaFalse();
-    
+    if(P.getCfgStatus()){
+        window::setAreaPoint(P.getPoints());
+    }else{
+        std::cerr<<"\nSet default point\n";
+        window::setAreaFalse();
+    }    
 }
 
 int window::getCenter(){
@@ -160,10 +171,10 @@ void window::draw(){
   glColor3f(0, 0, 0);
   draw_string(GLUT_STROKE_ROMAN, "Orientation:  ");
    switch(window::Ant.getOrient()){
-        case 0:draw_string(GLUT_STROKE_ROMAN, "UP");break;
-        case 90: draw_string(GLUT_STROKE_ROMAN, "LEFT");break;
-        case 180: draw_string(GLUT_STROKE_ROMAN, "DOWN");break;      
-        case 270: draw_string(GLUT_STROKE_ROMAN, "RIGHT");break; 
+        case 0:draw_string(GLUT_STROKE_ROMAN, "RIGHT");break;
+        case 90: draw_string(GLUT_STROKE_ROMAN, "UP");break;
+        case 180: draw_string(GLUT_STROKE_ROMAN, "LEFT");break;      
+        case 270: draw_string(GLUT_STROKE_ROMAN, "DOWN");break; 
     }
   glPopMatrix();
     
@@ -177,4 +188,13 @@ void window::draw(){
 void draw_string(void *font, const char* string){
   while (*string)
     glutStrokeCharacter(font, *string++);
+}
+
+void window::setAreaPoint(std::vector< std::pair<int,int>  > point){
+    window::setAreaFalse();
+    for(int i=0;i<point.size();++i){
+        if (point[i].first < Area.size() && point[i].second < Area.size()){
+            Area[point[i].first][ point[i].second]=true;
+        }
+    }
 }

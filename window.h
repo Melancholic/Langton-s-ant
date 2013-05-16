@@ -2,6 +2,8 @@
 #define	WINDOW_H
 #include"ant.h"
 #include<vector>
+#include <utility>
+#include"parser.h"
 class window {
     static int Width;
     static int Height;
@@ -12,8 +14,9 @@ class window {
     static ant Ant;
     static int Boxes;
     static void setAreaFalse();
+    static void setAreaPoint(std::vector< std::pair<int,int>  > point);
 public:
-    static void init(int w, int h, int b, int s);
+    static void init(int w, int h, int b,int s, parser &P );
     static void draw();
     static int getHeight();
     static int getWidth();

@@ -1,5 +1,6 @@
 #ifndef ANT_H
 #define	ANT_H
+#include"parser.h"
 class ant{
     int X;
     int Y;
@@ -7,6 +8,7 @@ class ant{
     int Iteration;
 public:
     ant();
+    ant(par_ant_start start);
     void toLeft();
     void toRight();
     int getX();

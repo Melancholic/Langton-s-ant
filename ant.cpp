@@ -9,6 +9,17 @@ ant::ant(){
     this->Iteration=0;
 }
 
+ant::ant(par_ant_start start){
+    this->X=start.x;
+    this->Y=start.y;
+    this->Orientation=start.orient;
+    this->Iteration=0;
+
+
+
+}
+
+
 void ant::toLeft(){
     switch(Orientation){
         case 0:X--;break;

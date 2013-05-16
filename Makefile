@@ -3,5 +3,7 @@ compile:
 
 run: 
 	echo "1024 700 250 10" |./LangtonAnt
+run-wp:
+	echo "1024 700 250 10" |./LangtonAnt data.cfg
 
 
