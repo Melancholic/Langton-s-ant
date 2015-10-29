@@ -1,16 +1,15 @@
 compile: 
-	g++ -lX11 -lXi -lglut -lGL -lGLU -lboost_thread-mt  *.cpp   -o LangtonAnt
-
+	g++ -std=c++11 *.cpp   -lX11 -lXi -lglut -lGL -lGLU -lpthread -o LangtonAnt
 all:ant.o main.o parser.o window.o
-	g++ -lX11 -lXi -lglut -lGL -lGLU -lboost_thread-mt ant.o main.o parser.o window.o -o new
+	g++ -std=c++11 *.o -lX11 -lXi -lglut -lGL -lGLU -lpthread   -o LangtonAnt
 ant.o:
-	g++ -c ant.cpp
+	g++ -std=c++11 -c ant.cpp
 main.o:
-	g++ -c main.cpp  
+	g++ -std=c++11 -c main.cpp  
 window.o:
-	g++ -c window.cpp
+	g++ -std=c++11 -c window.cpp
 parser.o:
-	g++ -c parser.cpp
+	g++ -std=c++11 -c parser.cpp
 run: 
 	echo "1024 700 250 10" |./LangtonAnt
 run-wp:

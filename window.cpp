@@ -2,7 +2,7 @@
 #include "window.h"
 #include <GL/glut.h>
 #include<iostream>
-#include<boost/thread/thread.hpp>
+#include<thread>
 #include <stdio.h>
 #include"parser.h"
 #include <utility>
@@ -105,7 +105,7 @@ void Values(){
 
 void window::process(int a){
     glutPostRedisplay();
-    boost::thread ValTh(Values);
+    std::thread ValTh(Values);
     ValTh.join();
    glutTimerFunc(window::Speed, window::process,1 );
 }
